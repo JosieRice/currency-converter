@@ -5,22 +5,22 @@ import { CurrencyConverter } from "./view/CurrencyConverter.tsx";
 import "./App.css";
 
 const queryClient = new QueryClient({
-    defaultOptions: {
-        queries: {
-            gcTime: 1000 * 60 * 15, // 15 min
-            retry: false,
-            staleTime: Infinity,
-        },
+  defaultOptions: {
+    queries: {
+      gcTime: 1000 * 60 * 15, // 15 min
+      retry: false,
+      staleTime: Infinity,
     },
+  },
 });
 
 function App() {
-    return (
-        <QueryClientProvider client={queryClient}>
-            <CurrencyConverter/>
-            <ReactQueryDevtools initialIsOpen={false} />
-        </QueryClientProvider>
-    );
+  return (
+    <QueryClientProvider client={queryClient}>
+      <CurrencyConverter />
+      <ReactQueryDevtools initialIsOpen={false} />
+    </QueryClientProvider>
+  );
 }
 
 export default App;

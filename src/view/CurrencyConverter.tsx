@@ -1,3 +1,9 @@
+import { useListCountries } from "../api/hooks/useListCountries.ts";
+
 export const CurrencyConverter = () => {
-    return <div>currency converter</div>
-}
+  const { data } = useListCountries();
+
+  console.log({ data });
+
+  return <div>currency converter</div>;
+};
