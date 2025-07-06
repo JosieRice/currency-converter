@@ -1,7 +1,7 @@
 export type ListCountriesResponse = {
   flags: Flag;
   name: Name;
-};
+}[];
 
 type Flag = {
   alt: string;
