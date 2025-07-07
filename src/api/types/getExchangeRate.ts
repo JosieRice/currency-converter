@@ -1,5 +1,5 @@
 export type ExchangeRateParams = {
-  currencyCode: string;
+  currencyCode?: string;
 };
 
 export type ExchangeRateResponse = {

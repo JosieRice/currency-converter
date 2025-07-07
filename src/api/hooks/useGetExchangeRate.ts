@@ -8,7 +8,8 @@ type Args = {
 
 export const useGetExchangeRate = ({ params }: Args) => {
   return useQuery({
+    enabled: Boolean(params.currencyCode),
     queryFn: () => getExchangeRate({ params }),
-    queryKey: ["exchangeRates"],
+    queryKey: ["exchangeRates", params],
   });
 };
