@@ -14,7 +14,11 @@ export const getExchangeRate = async ({
     | string
     | undefined;
 
-  const url = `https://v6.exchangerate-api.com/v6/${apiKey ?? ""}/latest/${params.currencyCode ?? ""}`;
+  if (!apiKey || !params.currencyCode) {
+    throw new Error("Exchange rate API key not found");
+  }
+
+  const url = `https://v6.exchangerate-api.com/v6/${apiKey}/latest/${params.currencyCode}`;
 
   const response = await fetch(url);
   if (!response.ok) {

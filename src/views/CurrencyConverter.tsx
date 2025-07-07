@@ -1,5 +1,5 @@
 import { Typography } from "@mui/material";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 import type { ListCountriesResponse } from "../api/types/listCountries.ts";
 import type { AutocompleteOption } from "../components/Autocomplete.tsx";
@@ -22,23 +22,27 @@ export const CurrencyConverter = () => {
   });
 
   const uniqueCurrencies =
-    countries?.reduce(
-      (acc: AutocompleteOption[], cur: ListCountriesResponse[0]) => {
-        Object.entries(cur.currencies).forEach(([code, details]) => {
-          // Check if cur already exists in acc
-          const exists = acc.some((item) => item.value === code);
-          // if it isn't there, add it in
-          if (!exists) {
-            acc.push({
-              label: `${code} - ${details?.symbol ?? ""} (${details?.name ?? ""})`,
-              value: code,
+    useMemo(
+      () =>
+        countries?.reduce(
+          (acc: AutocompleteOption[], cur: ListCountriesResponse[0]) => {
+            Object.entries(cur.currencies).forEach(([code, details]) => {
+              // Check if cur already exists in acc
+              const exists = acc.some((item) => item.value === code);
+              // if it isn't there, add it in
+              if (!exists) {
+                acc.push({
+                  label: `${code} - ${details?.symbol ?? ""} (${details?.name ?? ""})`,
+                  value: code,
+                });
+              }
             });
-          }
-        });
 
-        return acc;
-      },
-      [],
+            return acc;
+          },
+          [],
+        ),
+      [countries],
     ) ?? [];
 
   uniqueCurrencies.sort((a, b) => a.value.localeCompare(b.value));
