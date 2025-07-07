@@ -1,6 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
-import { getExchangeRate } from "../client/getExchangeRate.ts";
+
 import type { ExchangeRateParams } from "../types/getExchangeRate.ts";
+
+import { getExchangeRate } from "../client/getExchangeRate.ts";
 
 type Args = {
   params: ExchangeRateParams;

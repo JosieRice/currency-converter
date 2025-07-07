@@ -1,12 +1,13 @@
+import type { Dispatch, SetStateAction } from "react";
+
+import FormControl from "@mui/material/FormControl";
 import TextField from "@mui/material/TextField";
 import { NumericFormat } from "react-number-format";
-import type { Dispatch, SetStateAction } from "react";
-import FormControl from "@mui/material/FormControl";
 
 type Props = {
-  value: string;
   onChange: Dispatch<SetStateAction<string>>;
   symbol?: string;
+  value: string;
 };
 
 /**
@@ -17,20 +18,22 @@ type Props = {
  * @param symbol
  * @constructor
  */
-export const CurrencyField = ({ value, onChange, symbol }: Props) => {
+export const CurrencyField = ({ onChange, symbol, value }: Props) => {
   return (
-    <FormControl sx={{ width: "100%", margin: "16px" }}>
+    <FormControl sx={{ margin: "16px", width: "100%" }}>
       <NumericFormat
-        customInput={TextField}
-        value={value}
         allowLeadingZeros
+        customInput={TextField}
         decimalScale={2}
-        thousandSeparator
-        onChange={(event) => onChange(event.target.value)}
         label={"Amount"}
+        onChange={(event) => {
+          onChange(event.target.value);
+        }}
+        prefix={symbol ? ` ${symbol} ` : ""}
         size={"small"}
         sx={{ width: 500 }}
-        prefix={` ${symbol} `}
+        thousandSeparator
+        value={value}
       />
     </FormControl>
   );

@@ -5,7 +5,8 @@ body {
   justify-content: center;
 }
 
-h1, p {
+h1,
+p {
   color: black;
   margin: 16px !important;
 }

@@ -1,14 +1,15 @@
-import { useListCountries } from "../api/hooks/useListCountries.ts";
-import { useGetExchangeRate } from "../api/hooks/useGetExchangeRate.ts";
+import { Typography } from "@mui/material";
+import { useState } from "react";
 
 import type { ListCountriesResponse } from "../api/types/listCountries.ts";
-import { Autocomplete } from "../components/Autocomplete.tsx";
 import type { AutocompleteOption } from "../components/Autocomplete.tsx";
-import { useState } from "react";
-import { Typography } from "@mui/material";
+
+import { useGetExchangeRate } from "../api/hooks/useGetExchangeRate.ts";
+import { useListCountries } from "../api/hooks/useListCountries.ts";
+import { Autocomplete } from "../components/Autocomplete.tsx";
 import { CurrencyField } from "../components/CurrencyField.tsx";
-import { cleanMaskedCurrency } from "../utils/cleanMaskedCurrency.ts";
 import { useGetCurrencySymbol } from "../hooks/useGetCurrencySymbol.ts";
+import { cleanMaskedCurrency } from "../utils/cleanMaskedCurrency.ts";
 
 export const CurrencyConverter = () => {
   const [fromAmount, setFromAmount] = useState("");
@@ -23,19 +24,18 @@ export const CurrencyConverter = () => {
   const uniqueCurrencies =
     countries?.reduce(
       (acc: AutocompleteOption[], cur: ListCountriesResponse[0]) => {
-        if (cur.currencies) {
-          Object.entries(cur.currencies).forEach(([code, details]) => {
-            // Check if cur already exists in acc
-            const exists = acc.some((item) => item.value === code);
-            // if it isn't there, add it in
-            if (!exists) {
-              acc.push({
-                label: `${code} - ${details.symbol} (${details.name})`,
-                value: code,
-              });
-            }
-          });
-        }
+        Object.entries(cur.currencies).forEach(([code, details]) => {
+          // Check if cur already exists in acc
+          const exists = acc.some((item) => item.value === code);
+          // if it isn't there, add it in
+          if (!exists) {
+            acc.push({
+              label: `${code} - ${details?.symbol ?? ""} (${details?.name ?? ""})`,
+              value: code,
+            });
+          }
+        });
+
         return acc;
       },
       [],
@@ -44,14 +44,14 @@ export const CurrencyConverter = () => {
   uniqueCurrencies.sort((a, b) => a.value.localeCompare(b.value));
 
   const exchangeRate = toCurrency?.value
-    ? exchangeRates?.conversion_rates[toCurrency?.value]
+    ? exchangeRates?.conversion_rates[toCurrency.value]
     : undefined;
   const cleanFromAmount = cleanMaskedCurrency(fromAmount);
   const fromSymbol = useGetCurrencySymbol({ currency: fromCurrency?.value });
   const formattedToAmount = exchangeRate
     ? (cleanFromAmount * exchangeRate).toLocaleString(undefined, {
-        style: "currency",
         currency: toCurrency?.value,
+        style: "currency",
       })
     : "";
 
@@ -69,22 +69,22 @@ export const CurrencyConverter = () => {
       </Typography>
 
       <CurrencyField
-        value={fromAmount}
         onChange={setFromAmount}
         symbol={fromSymbol}
+        value={fromAmount}
       />
 
       <Autocomplete
         label={"From"}
+        onChange={setFromCurrency}
         options={uniqueCurrencies}
         value={fromCurrency}
-        onChange={setFromCurrency}
       />
       <Autocomplete
         label={"To"}
+        onChange={setToCurrency}
         options={uniqueCurrencies}
         value={toCurrency}
-        onChange={setToCurrency}
       />
 
       <Typography component={"p"}>

@@ -1,7 +1,8 @@
+import type { Dispatch, SetStateAction } from "react";
+
+import AutocompleteMUI from "@mui/material/Autocomplete";
 import FormControl from "@mui/material/FormControl";
 import TextField from "@mui/material/TextField";
-import AutocompleteMUI from "@mui/material/Autocomplete";
-import type { Dispatch, SetStateAction } from "react";
 
 export type AutocompleteOption = {
   label: string;
@@ -10,23 +11,16 @@ export type AutocompleteOption = {
 
 type Props = {
   label: string;
+  onChange: Dispatch<SetStateAction<AutocompleteOption | undefined>>;
   options: AutocompleteOption[];
   value?: AutocompleteOption;
-  onChange: Dispatch<SetStateAction<AutocompleteOption | undefined>>;
 };
 
-export const Autocomplete = ({ options, label, value, onChange }: Props) => {
+export const Autocomplete = ({ label, onChange, options, value }: Props) => {
   return (
-    <FormControl sx={{ width: "100%", margin: "16px" }}>
+    <FormControl sx={{ margin: "16px", width: "100%" }}>
       <AutocompleteMUI
         disablePortal
-        renderInput={(params) => (
-          <TextField {...params} sx={{ color: "black" }} label={label} />
-        )}
-        options={options}
-        sx={{ backgroundColor: "white", color: "black", width: 500 }}
-        size={"small"}
-        value={value}
         onChange={(_, value) => {
           if (!value) {
             onChange(undefined);
@@ -34,6 +28,13 @@ export const Autocomplete = ({ options, label, value, onChange }: Props) => {
           }
           onChange(value);
         }}
+        options={options}
+        renderInput={(params) => (
+          <TextField {...params} label={label} sx={{ color: "black" }} />
+        )}
+        size={"small"}
+        sx={{ backgroundColor: "white", color: "black", width: 500 }}
+        value={value}
       />
     </FormControl>
   );

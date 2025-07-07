@@ -1,7 +1,7 @@
 export type ListCountriesResponse = {
+  currencies: Currency;
   flags: Flag;
   name: Name;
-  currencies: Currency;
 }[];
 
 type Flag = {
@@ -16,8 +16,8 @@ type Name = {
   official: string;
 };
 
-type NativeName = {
-  fra: { official: string; common: string };
-};
+type NativeName = Record<string, { common: string; official: string }>;
 
-export type Currency = Record<string, { name: string; symbol: string }>;
+export type Currency = Partial<
+  Record<string, { name: string; symbol: string }>
+>;

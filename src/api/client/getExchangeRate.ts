@@ -10,9 +10,11 @@ type Args = {
 export const getExchangeRate = async ({
   params,
 }: Args): Promise<ExchangeRateResponse> => {
-  const apiKey = import.meta.env.VITE_EXCHANGE_RATE_API_KEY;
+  const apiKey = import.meta.env.VITE_EXCHANGE_RATE_API_KEY as
+    | string
+    | undefined;
 
-  const url = `https://v6.exchangerate-api.com/v6/${apiKey}/latest/${params.currencyCode}`;
+  const url = `https://v6.exchangerate-api.com/v6/${apiKey ?? ""}/latest/${params.currencyCode ?? ""}`;
 
   const response = await fetch(url);
   if (!response.ok) {

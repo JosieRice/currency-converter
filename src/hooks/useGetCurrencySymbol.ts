@@ -5,7 +5,7 @@ type Args = {
 };
 
 /**
- * give it a currency and get the currencies' symbol
+ * give it a currency and get the currency symbol
  *
  * @param currency
  */
@@ -16,5 +16,5 @@ export const useGetCurrencySymbol = ({ currency }: Args) => {
 
   return countries?.find((country) => country.currencies[currency])?.currencies[
     currency
-  ].symbol;
+  ]?.symbol;
 };
